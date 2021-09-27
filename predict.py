@@ -53,7 +53,7 @@ def extract_logmel(wav_path, mean, std, sr=16000):
     lf0 = f0.copy()
     lf0[nonzeros_indices] = np.log(
         f0[nonzeros_indices]
-    )  # for f0(Hz), lf0 > 0 when f0 != 0
+    )
     mean, std = np.mean(lf0[nonzeros_indices]), np.std(lf0[nonzeros_indices])
     lf0[nonzeros_indices] = (lf0[nonzeros_indices] - mean) / (std + 1e-8)
     return mel, lf0

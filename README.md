@@ -1,8 +1,10 @@
 ## VQMIVC: Vector Quantization and Mutual Information-Based Unsupervised Speech Representation Disentanglement for One-shot Voice Conversion (Interspeech 2021)
 
 ### [Paper](https://arxiv.org/abs/2106.10132) | [Pre-trained models](https://drive.google.com/file/d/1Flw6Z0K2QdRrTn5F-gVt6HdR9TRPiaKy/view?usp=sharing) | [Demo](https://wendison.github.io/VQMIVC-demo/)
+<a href="https://replicate.ai/wendison/vqmivc"><img src="https://img.shields.io/static/v1?label=Replicate&message=Demo and Docker Image&color=darkgreen" height=20></a>
 
-This paper proposes a speech representation disentanglement framework for *one-shot/any-to-any* voice conversion, which performs conversion across arbitrary speakers with only a single target-speaker utterance for reference. Vector quantization with contrastive predictive coding (VQCPC) is used for content encoding and mutual information (MI) is introduced as the correlation metric during training, to achieve proper disentanglement of content, speaker and pitch representations, by reducing their inter-dependencies in an *unsupervised* manner. 
+
+This paper proposes a speech representation disentanglement framework for *one-shot/any-to-any* voice conversion, which performs conversion across arbitrary speakers with only a single target-speaker utterance for reference. Vector quantization with contrastive predictive coding (VQCPC) is used for content encoding and mutual information (MI) is introduced as the correlation metric during training, to achieve proper disentanglement of content, speaker and pitch representations, by reducing their inter-dependencies in an *unsupervised* manner.
 
 <p align="center">
 	<img src='./diagram/diagram.png' width=1000 >
@@ -16,15 +18,15 @@ Python 3.6 is used, install [apex](https://github.com/NVIDIA/apex) for speeding 
 
 ## Quick start with pre-trained models
 ParallelWaveGAN is used as the vocoder, so firstly please install [ParallelWaveGAN](https://github.com/kan-bayashi/ParallelWaveGAN) to try the [pre-trained models](https://drive.google.com/file/d/1Flw6Z0K2QdRrTn5F-gVt6HdR9TRPiaKy/view?usp=sharing):
-	
-	python convert_example.py -s {source-wav} -r {reference-wav} -c {converted-wavs-save-path} -m {model-path} 
-	
+
+	python convert_example.py -s {source-wav} -r {reference-wav} -c {converted-wavs-save-path} -m {model-path}
+
 For example:
 
-	python convert_example.py -s test_wavs/p225_038.wav -r test_wavs/p334_047.wav -c converted -m checkpoints/useCSMITrue_useCPMITrue_usePSMITrue_useAmpTrue/VQMIVC-model.ckpt-500.pt 
-	
+	python convert_example.py -s test_wavs/p225_038.wav -r test_wavs/p334_047.wav -c converted -m checkpoints/useCSMITrue_useCPMITrue_usePSMITrue_useAmpTrue/VQMIVC-model.ckpt-500.pt
+
 The converted wav is put in 'converted' directory.
-	
+
 
 ## Training and inference:
 *  Step1. Data preparation & preprocessing
@@ -35,23 +37,23 @@ The converted wav is put in 'converted' directory.
 
 *  Step2. model training:
 1. Training with mutual information minimization (MIM):
-	
+
 		python train.py use_CSMI=True use_CPMI=True use_PSMI=True
 
 3. Training without MIM:
-		
-		python train.py use_CSMI=False use_CPMI=False use_PSMI=False 
+
+		python train.py use_CSMI=False use_CPMI=False use_PSMI=False
 
 *  Step3. model testing:
 1. Put PWG vocoder under directory: 'vocoder/'
 2. Inference with model trained with MIM:
-		
+
 		python convert.py checkpoint=checkpoints/useCSMITrue_useCPMITrue_usePSMITrue_useAmpTrue/model.ckpt-500.pt
-	
+
 3. Inference with model trained without MIM:
 
 		python convert.py checkpoint=checkpoints/useCSMIFalse_useCPMIFalse_usePSMIFalse_useAmpTrue/model.ckpt-500.pt
-	
+
 ## Citation
 If the code is used in your research, please <a class="github-button" href="https://github.com/wendison/VQMIVC" data-icon="octicon-star" aria-label="Star wendison/VQMIVC on GitHub">Star</a> our repo and cite our paper:
 ```
@@ -69,6 +71,3 @@ If the code is used in your research, please <a class="github-button" href="http
 * The decoder is modified from [AutoVC](https://github.com/auspicious3000/autovc);
 * Estimation of mutual information is modified from [CLUB](https://github.com/Linear95/CLUB);
 * Speech features extraction is based on [espnet](https://github.com/espnet/espnet) and [Pyworld](https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder).
-
-
-
